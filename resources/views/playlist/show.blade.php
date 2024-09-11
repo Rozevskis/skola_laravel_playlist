@@ -36,27 +36,26 @@
                 </thead>
                 <tbody>
                     @foreach ($playlist->songs as $song)
-                        <tr class="even:bg-blue-50">
+                    <tr class="even:bg-blue-50">
 
-                            <td class="text-xl">{{$song->title}}</td>
-                            <td>{{$song->artist}}</td>
-                            <td>{{$song->genre}}</td>
+                        <td class="text-xl">{{$song->title}}</td>
+                        <td>{{$song->artist}}</td>
+                        <td>{{$song->genre}}</td>
 
-                        </tr>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
 
             <!-- Add SONG -->
-            <form action=" {{route('playlist.addSong', ['playlist_id' => $playlist->id])}}" class="flex w-full gap-4"
+            <form action=" {{route('playlist.addSong',   $playlist->id )}}" class="flex w-full gap-4"
                 method="post">
-
                 @csrf
 
                 <select name="song_id" class="w-[50%]">
                     <option selected value="">--Please choose an option--</option>
                     @foreach ($avalibleSongs as $song)
-                        <option value="{{$song->id}}">{{$song->title}} by {{$song->artist}}</option>
+                    <option value="{{$song->id}}">{{$song->title}} by {{$song->artist}}</option>
                     @endforeach
                 </select>
                 <button type="submit" class="bg-green-400 rounded py-2 px-4 font-bold text-white">Add song</button>

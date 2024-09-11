@@ -53,8 +53,7 @@ class PlaylistController extends Controller
         // $avalibleSongs = Song::whereRelation('playlist', 'playlist_id', false)->get();
         $avalibleSongs = Song::all()->filter(function ($song) use ($playlist) {
             return !$playlist->songs->contains($song);
-        });
-        ;
+        });;
         return view('playlist.show', [
             'playlist' => $playlist,
             'avalibleSongs' => $avalibleSongs
@@ -106,10 +105,19 @@ class PlaylistController extends Controller
 
         return redirect('/playlist')->with('success', 'Playlist deleted successfully!');
     }
-    public function addSong(Request $request, $playlist_id)
+    public function addSong(Request $request,  $id)
     {
-        echo $request;
-        // echo ("Playlist id: " . $playlist_id . " Song id : " . $request->input('song_id'));
+        $playlist = Playlist::findOrFail($id);
 
+        $request->validate(
+            [
+                'song_id' => 'required|exists:songs,id',
+            ]
+        );
+        $songId = $request->input('song_id');
+
+        $playlist->songs()->attach($songId);
+
+        return redirect()->route('playlist.show', $playlist->id)->with('success', 'Song added to playlist.');
     }
 }
